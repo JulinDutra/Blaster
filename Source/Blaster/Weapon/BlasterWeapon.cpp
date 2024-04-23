@@ -8,7 +8,6 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/WidgetComponent.h"
 
-// Sets default values
 ABlasterWeapon::ABlasterWeapon()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -41,6 +40,7 @@ void ABlasterWeapon::BeginPlay()
 		WeaponAreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		WeaponAreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 		WeaponAreaSphere->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSphereOverlap);
+		WeaponAreaSphere->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnSphereEndOverlap);
 	}
 
 	if(PickupWidget)
@@ -54,12 +54,24 @@ void ABlasterWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, A
 {
 	if(ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor); BlasterCharacter && PickupWidget)
 	{
-		PickupWidget->SetVisibility(true);
+		BlasterCharacter->SetOverlappingWeapon(this);
 	}
 }
 
-void ABlasterWeapon::Tick(float DeltaTime)
+void ABlasterWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	Super::Tick(DeltaTime);
+	if(ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor); BlasterCharacter && PickupWidget)
+	{
+		BlasterCharacter->SetOverlappingWeapon(nullptr);
+	}
+}
+
+void ABlasterWeapon::ShowPickupWidget(bool bShowWidget)
+{
+	if(PickupWidget)
+	{
+		PickupWidget->SetVisibility(bShowWidget);
+	}
 }
 

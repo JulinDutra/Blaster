@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class ABlasterWeapon;
 class UWidgetComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -36,9 +37,26 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> LookAction;
-	
+
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> JumpAction;
+
+	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
+	TObjectPtr<ABlasterWeapon> OverlappingWeapon;
+
+	UFUNCTION()
+	void OnRep_OverlappingWeapon(ABlasterWeapon* LastWeapon) const;
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void PossessedBy(AController* NewController) override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void Move(const FInputActionValue& Value);
+
+	void Look(const FInputActionValue& Value);
 
 public:
 	ABlasterCharacter();
@@ -56,13 +74,6 @@ public:
 
 	UFUNCTION(BlueprintGetter)
 	FORCEINLINE UWidgetComponent* GetOverheadWidgetComponent() const { return OverheadWidget; }
-	
-protected:
-	virtual void BeginPlay() override;
-	
-	virtual void PossessedBy(AController* NewController) override;
-	
-	void Move(const FInputActionValue& Value);
-	
-	void Look(const FInputActionValue& Value);
+
+	void SetOverlappingWeapon(ABlasterWeapon* Weapon);
 };
