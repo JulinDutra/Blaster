@@ -32,7 +32,7 @@ class BLASTER_API ABlasterWeapon : public AActor
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	TObjectPtr<UWidgetComponent> PickupWidget;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintSetter= "SetWeaponState")
 	EBlasterWeaponState WeaponState;
 
 protected:
@@ -48,4 +48,7 @@ public:
 	ABlasterWeapon();
 
 	void ShowPickupWidget(bool bShowWidget);
+
+	UFUNCTION(BlueprintSetter)
+	FORCEINLINE void SetWeaponState(EBlasterWeaponState State) {WeaponState = State; }
 };

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
+class UBlasterCombatComponent;
 class ABlasterWeapon;
 class UWidgetComponent;
 class USpringArmComponent;
@@ -41,8 +42,14 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> EquipAction;
+
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	TObjectPtr<ABlasterWeapon> OverlappingWeapon;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UBlasterCombatComponent> CombatComponent;
 
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(ABlasterWeapon* LastWeapon) const;
@@ -54,9 +61,13 @@ protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	virtual void PostInitializeComponents() override;
+
 	void Move(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
+
+	void EquipButtonPressed();
 
 public:
 	ABlasterCharacter();
