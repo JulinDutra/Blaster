@@ -90,4 +90,6 @@ public:
 	FORCEINLINE UWidgetComponent* GetOverheadWidgetComponent() const { return OverheadWidget; }
 
 	void SetOverlappingWeapon(ABlasterWeapon* Weapon);
+
+	bool IsWeaponEquipped();
 };

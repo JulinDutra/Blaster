@@ -25,6 +25,9 @@ class BLASTER_API UBlasterAnimInstance : public UAnimInstance
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsInAccelerating;
 
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	bool bWeaponEquipped;
+
 public:
 	virtual void NativeInitializeAnimation() override;
 

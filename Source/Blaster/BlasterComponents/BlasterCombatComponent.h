@@ -17,6 +17,7 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 
 	friend class ABlasterCharacter;
 
+	UPROPERTY(Replicated)
 	TObjectPtr<ABlasterWeapon> EquippedWeapon;
 
 	TObjectPtr<ABlasterCharacter> Character;
@@ -31,4 +32,6 @@ protected:
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

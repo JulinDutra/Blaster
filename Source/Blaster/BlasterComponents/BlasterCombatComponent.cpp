@@ -7,6 +7,7 @@
 #include "Blaster/Weapon/BlasterWeapon.h"
 #include "Components/SphereComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Net/UnrealNetwork.h"
 
 UBlasterCombatComponent::UBlasterCombatComponent()
 {
@@ -40,5 +41,12 @@ void UBlasterCombatComponent::BeginPlay()
 void UBlasterCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UBlasterCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UBlasterCombatComponent, EquippedWeapon);
 }
 
