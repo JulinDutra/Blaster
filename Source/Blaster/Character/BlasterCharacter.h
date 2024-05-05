@@ -54,6 +54,9 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(ABlasterWeapon* LastWeapon) const;
 
+	UFUNCTION(Server, Reliable)
+	void ServerEquipButtonPressed();
+
 protected:
 	virtual void BeginPlay() override;
 

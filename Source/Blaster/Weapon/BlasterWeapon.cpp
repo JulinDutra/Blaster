@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 
 ABlasterWeapon::ABlasterWeapon()
 {
@@ -29,6 +30,23 @@ ABlasterWeapon::ABlasterWeapon()
 
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(RootComponent);
+}
+
+void ABlasterWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ABlasterWeapon, WeaponState);
+}
+
+void ABlasterWeapon::OnRep_WeaponState()
+{
+	switch(WeaponState)
+	{
+		case EBlasterWeaponState::Equipped:
+			ShowPickupWidget(false);
+			break;
+	}
 }
 
 void ABlasterWeapon::BeginPlay()
@@ -72,6 +90,19 @@ void ABlasterWeapon::ShowPickupWidget(bool bShowWidget)
 	if(PickupWidget)
 	{
 		PickupWidget->SetVisibility(bShowWidget);
+	}
+}
+
+void ABlasterWeapon::SetWeaponState(EBlasterWeaponState State)
+{
+	WeaponState = State;
+
+	switch(WeaponState)
+	{
+		case EBlasterWeaponState::Equipped:
+			ShowPickupWidget(false);
+			GetWeaponAreaSphere()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			break;
 	}
 }
 

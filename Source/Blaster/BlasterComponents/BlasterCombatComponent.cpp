@@ -5,6 +5,7 @@
 
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/Weapon/BlasterWeapon.h"
+#include "Components/SphereComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 
 UBlasterCombatComponent::UBlasterCombatComponent()
@@ -22,13 +23,13 @@ void UBlasterCombatComponent::EquipWeapon(ABlasterWeapon* InEquippedWeapon)
 	EquippedWeapon = InEquippedWeapon;
 	EquippedWeapon->SetWeaponState(EBlasterWeaponState::Equipped);
 	const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket"));
+
 	if(HandSocket)
 	{
 		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());
 	}
 
 	EquippedWeapon->SetOwner(Character);
-	EquippedWeapon->ShowPickupWidget(false);
 }
 
 void UBlasterCombatComponent::BeginPlay()

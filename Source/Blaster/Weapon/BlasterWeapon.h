@@ -26,14 +26,17 @@ class BLASTER_API ABlasterWeapon : public AActor
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties", BlueprintGetter= "GetWeaponAreaSphere")
 	TObjectPtr<USphereComponent> WeaponAreaSphere;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	TObjectPtr<UWidgetComponent> PickupWidget;
 
-	UPROPERTY(VisibleAnywhere, BlueprintSetter= "SetWeaponState")
+	UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere, BlueprintSetter= "SetWeaponState")
 	EBlasterWeaponState WeaponState;
+
+	UFUNCTION()
+	void OnRep_WeaponState();
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,8 +50,13 @@ protected:
 public:
 	ABlasterWeapon();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	void ShowPickupWidget(bool bShowWidget);
 
 	UFUNCTION(BlueprintSetter)
-	FORCEINLINE void SetWeaponState(EBlasterWeaponState State) {WeaponState = State; }
+	void SetWeaponState(EBlasterWeaponState State);
+
+	UFUNCTION(BlueprintGetter)
+	FORCEINLINE USphereComponent* GetWeaponAreaSphere() const {return WeaponAreaSphere; }
 };
