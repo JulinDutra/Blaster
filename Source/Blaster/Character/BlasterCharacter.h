@@ -48,6 +48,9 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> CrouchAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> AimAction;
+
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	TObjectPtr<ABlasterWeapon> OverlappingWeapon;
 
@@ -77,6 +80,10 @@ protected:
 
 	void CrouchButtonPressed();
 
+	void AimButtonPressed();
+
+	void AimButtonReleased();
+
 public:
 	ABlasterCharacter();
 
@@ -97,4 +104,6 @@ public:
 	void SetOverlappingWeapon(ABlasterWeapon* Weapon);
 
 	bool IsWeaponEquipped();
+
+	bool IsAiming();
 };

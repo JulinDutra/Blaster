@@ -22,15 +22,22 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 
 	TObjectPtr<ABlasterCharacter> Character;
 
+	UPROPERTY(Replicated)
+	bool bAiming;
+
+protected:
+	virtual void BeginPlay() override;
+
+	void SetAiming(bool bIsAiming);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetAiming(bool bIsAiming);
+
 public:
 	UBlasterCombatComponent();
 
 	void EquipWeapon(ABlasterWeapon* InEquippedWeapon);
 
-protected:
-	virtual void BeginPlay() override;
-
-public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

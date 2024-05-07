@@ -31,6 +31,9 @@ class BLASTER_API UBlasterAnimInstance : public UAnimInstance
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouched;
 
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	bool bAiming;
+
 public:
 	virtual void NativeInitializeAnimation() override;
 

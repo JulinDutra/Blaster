@@ -38,6 +38,17 @@ void UBlasterCombatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
+void UBlasterCombatComponent::SetAiming(bool bIsAiming)
+{
+	bAiming = bIsAiming;
+	ServerSetAiming(bIsAiming);
+}
+
+void UBlasterCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
+{
+	bAiming = bIsAiming;
+}
+
 void UBlasterCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -48,5 +59,6 @@ void UBlasterCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(UBlasterCombatComponent, EquippedWeapon);
+	DOREPLIFETIME(UBlasterCombatComponent, bAiming);
 }
 
