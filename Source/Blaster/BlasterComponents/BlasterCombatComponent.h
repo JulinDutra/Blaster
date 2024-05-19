@@ -17,7 +17,7 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 
 	friend class ABlasterCharacter;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<ABlasterWeapon> EquippedWeapon;
 
 	TObjectPtr<ABlasterCharacter> Character;
@@ -32,6 +32,9 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bIsAiming);
+
+	UFUNCTION()
+	void OnRep_EquippedWeapon() const;
 
 public:
 	UBlasterCombatComponent();

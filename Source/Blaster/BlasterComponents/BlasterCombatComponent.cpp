@@ -7,6 +7,7 @@
 #include "Blaster/Weapon/BlasterWeapon.h"
 #include "Components/SphereComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
 UBlasterCombatComponent::UBlasterCombatComponent()
@@ -31,6 +32,8 @@ void UBlasterCombatComponent::EquipWeapon(ABlasterWeapon* InEquippedWeapon)
 	}
 
 	EquippedWeapon->SetOwner(Character);
+	Character->GetCharacterMovement()->bOrientRotationToMovement = false;
+	Character->bUseControllerRotationYaw = true;
 }
 
 void UBlasterCombatComponent::BeginPlay()
@@ -47,6 +50,15 @@ void UBlasterCombatComponent::SetAiming(bool bIsAiming)
 void UBlasterCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
 {
 	bAiming = bIsAiming;
+}
+
+void UBlasterCombatComponent::OnRep_EquippedWeapon() const
+{
+	if(EquippedWeapon && Character)
+	{
+		Character->GetCharacterMovement()->bOrientRotationToMovement = false;
+		Character->bUseControllerRotationYaw = true;
+	}
 }
 
 void UBlasterCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
