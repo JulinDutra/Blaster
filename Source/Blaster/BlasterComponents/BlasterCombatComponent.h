@@ -25,6 +25,12 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 	UPROPERTY(Replicated)
 	bool bAiming;
 
+	UPROPERTY(EditAnywhere)
+	float BaseWalkSpeed = 600.f;
+
+	UPROPERTY(EditAnywhere)
+	float AimWalkSpeed = 450.f;
+
 protected:
 	virtual void BeginPlay() override;
 
