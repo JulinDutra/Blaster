@@ -57,6 +57,12 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBlasterCombatComponent> CombatComponent;
 
+	float AO_Yaw;
+
+	float AO_Pitch;
+
+	FRotator StartingAimRotation;
+
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(ABlasterWeapon* LastWeapon) const;
 
@@ -84,8 +90,12 @@ protected:
 
 	void AimButtonReleased();
 
+	void AimOffset(float DeltaTime);
+
 public:
 	ABlasterCharacter();
+
+	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
@@ -106,4 +116,8 @@ public:
 	bool IsWeaponEquipped();
 
 	bool IsAiming();
+
+	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
+
+	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 };
