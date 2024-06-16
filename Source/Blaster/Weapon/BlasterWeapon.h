@@ -23,7 +23,7 @@ class BLASTER_API ABlasterWeapon : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties", BlueprintGetter= "GetWeaponMesh")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties", BlueprintGetter= "GetWeaponAreaSphere")
@@ -59,4 +59,7 @@ public:
 
 	UFUNCTION(BlueprintGetter)
 	FORCEINLINE USphereComponent* GetWeaponAreaSphere() const {return WeaponAreaSphere; }
+
+	UFUNCTION(BlueprintGetter)
+	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 };
