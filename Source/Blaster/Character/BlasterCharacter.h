@@ -60,6 +60,8 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 
 	float AO_Yaw;
 
+	float InterpAO_Yaw;
+
 	float AO_Pitch;
 
 	FRotator StartingAimRotation;
