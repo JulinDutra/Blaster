@@ -85,6 +85,8 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
+	virtual void Jump() override;
+
 	void Move(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
