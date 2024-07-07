@@ -52,11 +52,17 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, Category = Input)
 	TObjectPtr<UInputAction> AimAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	TObjectPtr<UInputAction> FireAction;
+
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 	TObjectPtr<ABlasterWeapon> OverlappingWeapon;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBlasterCombatComponent> CombatComponent;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TObjectPtr<UAnimMontage> FireWeaponMontage;
 
 	float AO_Yaw;
 
@@ -101,6 +107,10 @@ protected:
 
 	void AimOffset(float DeltaTime);
 
+	void FireButtonPressed();
+
+	void FireButtonReleased();
+
 public:
 	ABlasterCharacter();
 
@@ -133,4 +143,6 @@ public:
 	bool IsAiming();
 
 	ABlasterWeapon* GetEquippedWeapon();
+
+	void PlayFireMontage(bool bAiming);
 };

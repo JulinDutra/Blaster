@@ -31,6 +31,8 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 	UPROPERTY(EditAnywhere)
 	float AimWalkSpeed = 450.f;
 
+	bool bFireButtonPressed;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -41,6 +43,8 @@ protected:
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon() const;
+
+	void FireButtonPressed(bool bPressed);
 
 public:
 	UBlasterCombatComponent();
