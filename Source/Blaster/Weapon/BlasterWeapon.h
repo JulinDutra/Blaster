@@ -35,6 +35,9 @@ class BLASTER_API ABlasterWeapon : public AActor
 	UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere, BlueprintSetter= "SetWeaponState")
 	EBlasterWeaponState WeaponState;
 
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	TObjectPtr<UAnimationAsset> FireAnimation;
+
 	UFUNCTION()
 	void OnRep_WeaponState();
 
@@ -62,4 +65,6 @@ public:
 
 	UFUNCTION(BlueprintGetter)
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+
+	void Fire();
 };

@@ -106,3 +106,11 @@ void ABlasterWeapon::SetWeaponState(EBlasterWeaponState State)
 	}
 }
 
+void ABlasterWeapon::Fire()
+{
+	if(FireAnimation)
+	{
+		WeaponMesh->PlayAnimation(FireAnimation, false);
+	}
+}
+
