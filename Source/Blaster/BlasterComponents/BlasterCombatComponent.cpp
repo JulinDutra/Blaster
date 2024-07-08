@@ -5,7 +5,6 @@
 
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/Weapon/BlasterWeapon.h"
-#include "Components/SphereComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
@@ -78,12 +77,25 @@ void UBlasterCombatComponent::FireButtonPressed(bool bPressed)
 {
 	bFireButtonPressed = bPressed;
 
+	if(bFireButtonPressed)
+	{
+		ServerFire();
+	}
+}
+
+void UBlasterCombatComponent::ServerFire_Implementation()
+{
+	MulticastFire();
+}
+
+void UBlasterCombatComponent::MulticastFire_Implementation()
+{
 	if (EquippedWeapon == nullptr)
 	{
 		return;
 	}
 
-	if(Character && bFireButtonPressed)
+	if(Character)
 	{
 		Character->PlayFireMontage(bAiming);
 		EquippedWeapon->Fire();

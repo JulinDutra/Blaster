@@ -18,20 +18,20 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 	friend class ABlasterCharacter;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
-	TObjectPtr<ABlasterWeapon> EquippedWeapon;
+	TObjectPtr<ABlasterWeapon> EquippedWeapon {};
 
-	TObjectPtr<ABlasterCharacter> Character;
+	TObjectPtr<ABlasterCharacter> Character {};
 
 	UPROPERTY(Replicated)
-	bool bAiming;
+	bool bAiming = false;
+
+	bool bFireButtonPressed = false;
 
 	UPROPERTY(EditAnywhere)
 	float BaseWalkSpeed = 600.f;
 
 	UPROPERTY(EditAnywhere)
 	float AimWalkSpeed = 450.f;
-
-	bool bFireButtonPressed;
 
 protected:
 	virtual void BeginPlay() override;
@@ -45,6 +45,12 @@ protected:
 	void OnRep_EquippedWeapon() const;
 
 	void FireButtonPressed(bool bPressed);
+
+	UFUNCTION(Server, Reliable)
+	void ServerFire();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastFire();
 
 public:
 	UBlasterCombatComponent();
