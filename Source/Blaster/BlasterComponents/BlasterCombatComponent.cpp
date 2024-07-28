@@ -1,17 +1,47 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "BlasterCombatComponent.h"
 
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/Weapon/BlasterWeapon.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+
+void UBlasterCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
+{
+	FVector2D ViewportSize;
+	if(GEngine && GEngine->GameViewport)
+	{
+		GEngine->GameViewport->GetViewportSize(ViewportSize);
+	}
+
+	const FVector2D CrosshairLocation(ViewportSize.X / 2.f, ViewportSize.Y /2.f);
+	FVector CrosshairWorldPosition;
+	FVector CrosshairWorldDirection;
+
+	if(UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0), CrosshairLocation,CrosshairWorldPosition,CrosshairWorldDirection))
+	{
+		const FVector StartPosition = CrosshairWorldPosition;
+		const FVector EndPosition = StartPosition + CrosshairWorldDirection * TraceLength;
+
+		GetWorld()->LineTraceSingleByChannel(TraceHitResult, StartPosition, EndPosition, ECC_Visibility);
+
+		if(!TraceHitResult.bBlockingHit)
+		{
+			TraceHitResult.ImpactNormal = EndPosition;
+		}
+		else
+		{
+			DrawDebugSphere(GetWorld(), TraceHitResult.ImpactPoint, 12.f, 12, FColor::Red);
+		}
+	}
+}
 
 UBlasterCombatComponent::UBlasterCombatComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UBlasterCombatComponent::EquipWeapon(ABlasterWeapon* InEquippedWeapon)
@@ -23,9 +53,8 @@ void UBlasterCombatComponent::EquipWeapon(ABlasterWeapon* InEquippedWeapon)
 
 	EquippedWeapon = InEquippedWeapon;
 	EquippedWeapon->SetWeaponState(EBlasterWeaponState::Equipped);
-	const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket"));
 
-	if(HandSocket)
+	if(const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket")))
 	{
 		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());
 	}
@@ -105,6 +134,9 @@ void UBlasterCombatComponent::MulticastFire_Implementation()
 void UBlasterCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	FHitResult HitResult;
+	TraceUnderCrosshairs(HitResult);
 }
 
 void UBlasterCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

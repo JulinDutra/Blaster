@@ -33,6 +33,9 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 	UPROPERTY(EditAnywhere)
 	float AimWalkSpeed = 450.f;
 
+	UPROPERTY(EditAnywhere)
+	float TraceLength = 80000.f;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -51,6 +54,8 @@ protected:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastFire();
+
+	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
 public:
 	UBlasterCombatComponent();
