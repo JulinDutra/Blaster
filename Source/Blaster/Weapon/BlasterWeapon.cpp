@@ -106,7 +106,7 @@ void ABlasterWeapon::SetWeaponState(EBlasterWeaponState State)
 	}
 }
 
-void ABlasterWeapon::Fire()
+void ABlasterWeapon::Fire(const FVector& HitTarget)
 {
 	if(FireAnimation)
 	{

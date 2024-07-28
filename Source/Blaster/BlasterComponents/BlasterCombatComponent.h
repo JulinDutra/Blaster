@@ -36,6 +36,8 @@ class BLASTER_API UBlasterCombatComponent : public UActorComponent
 	UPROPERTY(EditAnywhere)
 	float TraceLength = 80000.f;
 
+	FVector HitTarget;
+
 protected:
 	virtual void BeginPlay() override;
 
