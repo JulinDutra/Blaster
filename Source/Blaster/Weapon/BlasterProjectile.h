@@ -20,6 +20,11 @@ class BLASTER_API ABlasterProjectile : public AActor
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UParticleSystem> Tracer;
+
+	TObjectPtr<UParticleSystemComponent> TracerComponent;
+
 protected:
 	virtual void BeginPlay() override;
 
