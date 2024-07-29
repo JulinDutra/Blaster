@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "BlasterWeapon.generated.h"
 
+class ABlasterBulletShell;
 class UWidgetComponent;
 class USphereComponent;
 class USkeletalMeshComponent;
@@ -37,6 +38,9 @@ class BLASTER_API ABlasterWeapon : public AActor
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	TObjectPtr<UAnimationAsset> FireAnimation;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ABlasterBulletShell> BulletShellClass;
 
 	UFUNCTION()
 	void OnRep_WeaponState();
