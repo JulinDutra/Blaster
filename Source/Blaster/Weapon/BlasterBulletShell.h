@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BlasterBulletShell.generated.h"
 
+class USoundCue;
+
 UCLASS()
 class BLASTER_API ABlasterBulletShell : public AActor
 {
@@ -14,9 +16,18 @@ class BLASTER_API ABlasterBulletShell : public AActor
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> BulletShellMesh;
 
+	UPROPERTY(EditAnywhere)
+	float ShellEjectionImpulse = 10.f;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundCue> ShellSound;
+
 public:
 	ABlasterBulletShell();
 
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };
